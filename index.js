@@ -1,30 +1,28 @@
-const express = require("express");
-const hbs = require("hbs");
-const wax = require("wax-on");
-
+const express = require('express');
+const hbs = require('hbs')
+const wax = require('wax-on');
+var helpers = require('handlebars-helpers')({
+    handlebars: hbs.handlebars
+  });
+  
 const app = express();
 
-app.set("view engine", "hbs");
+app.set('view engine', 'hbs');
 
 // static folder
-app.use(express.static("public"));
+app.use(express.static('public'))
 
 // setup wax-on
 wax.on(hbs.handlebars);
-wax.setLayoutPath("./views/layouts");
+wax.setLayoutPath('./views/layouts')
 
-const landingRoutes = require("./routes/landing");
-const productRoutes = require("./routes/products");
+const landingRoutes = require('./routes/landing');
+const productRoutes = require('./routes/products');
 
-// app.use('/',landingRoutes)
-// const productRoutes = require('./routes/products');
+// first arg is the prefix
+app.use('/', landingRoutes);
+app.use('/products', productRoutes);
 
-app.use("/", landingRoutes);
-
-// // ==> /xyz is a prefix can name anything to productRoutes
-// // most important is to link to the correct const var--- productRoutes (***,productRoutes)
-app.use("/products", productRoutes);
-
-app.listen(3000, function () {
-  console.log("Server has started");
-});
+app.listen(3000, function(){
+    console.log("Server has started");
+})

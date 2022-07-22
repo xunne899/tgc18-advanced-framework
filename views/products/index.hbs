@@ -1,32 +1,22 @@
+
 {{#extends 'base'}}
 
 {{#block 'content'}}
 <table class="table">
     <thead>
         <tr>
-            <th>ID</th>
             <th>Name</th>
-            <th>Cost</th>
             <th>Description</th>
+            <th>Cost</th>
         </tr>
-
     </thead>
     <tbody>
         {{#each products}}
-            <tr>
-                <td>
-                    {{this.id}}
-                </td>
-                <td>
-                    {{this.name}}
-                </td>
-                <td>
-                    {{this.cost}}
-                </td>
-                <td>
-                    {{this.description}}
-                </td>
-            </tr>
+        <tr>
+            <td>{{this.name}}</td>
+            <td>{{this.description}}</td>
+            <td>{{divide this.cost 100}}</td>
+        </tr>
         {{/each}}
     </tbody>
 </table>
