@@ -14,7 +14,7 @@ wax.on(hbs.handlebars);
 wax.setLayoutPath("./views/layouts");
 
 const landingRoutes = require("./routes/landing");
-const productRoutes = require('./routes/products');
+const productRoutes = require("./routes/products");
 
 // app.use('/',landingRoutes)
 // const productRoutes = require('./routes/products');
