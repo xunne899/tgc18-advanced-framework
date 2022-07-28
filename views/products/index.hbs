@@ -1,13 +1,17 @@
-
 {{#extends 'base'}}
 
 {{#block 'content'}}
+<h1>Products</h1>
+<a href="/products/create" class="btn btn-primary">New</a>
 <table class="table">
     <thead>
         <tr>
             <th>Name</th>
             <th>Description</th>
             <th>Cost</th>
+            <th>Category</th>
+            <th>Tags</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -16,6 +20,16 @@
             <td>{{this.name}}</td>
             <td>{{this.description}}</td>
             <td>{{divide this.cost 100}}</td>
+            <td>{{this.category.name}}</td>
+            <td>
+                {{#each this.tags}}
+                    <span class="badge bg-primary">{{this.name}}</span>
+                {{/each}}
+            </td>
+            <td>
+                <a href="products/{{this.id}}/update" class="btn btn-primary btn-sm">Update</a>
+                <a href="products/{{this.id}}/delete" class="btn btn-danger btn-sm">Delete</a>
+            </td>
         </tr>
         {{/each}}
     </tbody>
