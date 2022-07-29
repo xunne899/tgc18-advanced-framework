@@ -37,7 +37,8 @@ app.use(flash())
 //set up middle ware
 app.use(function(req,res,next){
   res.locals.success_message = req.flash('success_messages');
-  res.locals.error_messages = req.flash('error_messages')
+  res.locals.error_messages = req.flash('error_messages') 
+  next()
 })
 const landingRoutes = require('./routes/landing');
 const productRoutes = require('./routes/products');
