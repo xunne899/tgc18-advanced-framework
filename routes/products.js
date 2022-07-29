@@ -3,7 +3,8 @@ const router = express.Router();
 
 // import in the Product model
 const { Product, Category, Tag } = require('../models')
-const { createProductForm, bootstrapField } = require('../forms')
+const { createProductForm, bootstrapField } = require('../forms');
+const { checkIfAuthenticated } = require('../middlewares');
 
 router.get('/', async function (req, res) {
     // fetch all the products
@@ -17,7 +18,7 @@ router.get('/', async function (req, res) {
     })
 })
 
-router.get('/create', async function (req, res) {
+router.get('/create', checkIfAuthenticated, async function (req, res) {
 
     // fetch all the categories in the system
     const categories = await Category.fetchAll().map(category => {
@@ -42,7 +43,7 @@ router.get('/create', async function (req, res) {
     })
 })
 
-router.post('/create', async function (req, res) {
+router.post('/create', checkIfAuthenticated, async function (req, res) {
     // fetch all the categories in the system
     const categories = await Category.fetchAll().map(category => {
         return [category.get('id'), category.get('name')]
@@ -71,7 +72,10 @@ router.post('/create', async function (req, res) {
                 // for example: "1,3"
                 await product.tags().attach(form.data.tags.split(','))
             }
+            // req.flash is available because we did a app.use(flash()) inside index.js
+            req.flash("success_messages", `New product ${product.get('name')} has been created`)
             res.redirect('/products')
+
 
         },
         'error': function (form) {
