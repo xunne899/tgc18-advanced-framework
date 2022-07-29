@@ -1,9 +1,11 @@
 {{#extends 'base'}}
+
 {{#block 'content'}}
-<h1>Update product:{{product.name}}</h1>
+<h1>Update product: {{product.name}}</h1>
 <form method="POST">
     {{{form}}}
-    <input type="submit" value="update product" class="btn btn-primary mt-2">
-</form> 
+    <input type="submit" class="btn btn-primary my-3"/>
+</form>
 {{/block}}
+
 {{/extends}}
