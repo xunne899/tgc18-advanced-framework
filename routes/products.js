@@ -120,6 +120,7 @@ router.get('/:product_id/update', async function (req, res) {
     productForm.fields.cost.value = product.get('cost');
     productForm.fields.description.value = product.get('description');
     productForm.fields.category_id.value = product.get('category_id');
+    productForm.fields.category_id.value = product.get('image_url');
 
     // fill in the multi-select for tags
     // product.related('tags') will return an array of tag objects
@@ -130,7 +131,10 @@ router.get('/:product_id/update', async function (req, res) {
 
     res.render('products/update', {
         'form': productForm.toHTML(bootstrapField),
-        'product': product.toJSON()
+        'product': product.toJSON(),
+        'cloudinaryName':  process.env.CLOUDINARY_NAME,
+        'cloudinaryApiKey': process.env.CLOUDINARY_API_KEY,
+        'cloudinaryPreset': process.env.CLOUDINARY_PRESET
 
     })
 })

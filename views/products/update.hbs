@@ -4,8 +4,71 @@
 <h1>Update product: {{product.name}}</h1>
 <form method="POST">
     {{{form}}}
+    <div>
+        {{#if product.image_url}}
+            <img src="{{product.image_url}}" id="uploaded_image"/>
+        {{else}}
+            <img src="" style="display:none" id="uploaded_image"/>
+        {{/if}}
+    </div>
+    <div>
+        <a href="#" class="btn btn-primary" id="upload_widget">
+            Change Image
+        </a>
+    </div>
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
     <input type="submit" class="btn btn-primary my-3"/>
 </form>
+{{/block}}
+
+{{#block "js"}}
+<!-- axios -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- cloudinary widget -->
+<script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
+
+<!-- get signature -->
+<script>
+    function generateSignature(callback, params_to_sign) {
+        // pass the parameter to sign to the cloudinary route
+        // in the query string
+        axios.get('/cloudinary/sign',{
+            'params':{
+                'params_to_sign': params_to_sign
+            }
+        }).then(function(response){
+            // callback is given by cloudinary
+            callback(response.data);
+        })
+    }
+</script>
+
+<!-- display the widget -->
+<script>
+const myWidget = cloudinary.createUploadWidget({
+    cloudName:"{{cloudinaryName}}",
+    apiKey: "{{cloudinaryApiKey}}",
+    uploadPreset: "{{cloudinaryPreset}}",
+    uploadSignature: generateSignature
+}, (error, result)=>{
+    if (!error && result.event == "success") {
+        console.log(result);
+        document.querySelector('#id_image_url').value = result.info.url;
+        document.querySelector("#uploaded_image").src = result.info.url;
+        document.querySelector('#uploaded_image').style.display='block';
+    }
+})
+
+<!-- add event listener to the upload button -->
+document.querySelector("#upload_widget")
+    .addEventListener('click', function(e){
+        e.preventDefault();
+        myWidget.open();
+    })
+
+</script>
+
 {{/block}}
 
 {{/extends}}
