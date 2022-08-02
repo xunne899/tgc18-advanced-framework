@@ -42,8 +42,8 @@ router.get('/', async function(req,res){
     const payment = {
         payment_method_types: ['card'],
         line_items: lineItems,
-        success_url: 'http://www.google.com',
-        cancel_url: 'http://www.yahoo.com',
+        success_url: process.env.STRIPE_SUCCESS_URL + "?sessionId={CHECKOUT_SESSION_ID}",
+        cancel_url: process.env.STRIPE_CANCEL_URL,
         // in the metadata, the keys are up to us
         // but the value MUST BE A STRING
         metadata: {
@@ -59,6 +59,14 @@ router.get('/', async function(req,res){
         sessionId: stripeSession.id,
         publishableKey: process.env.STRIPE_PUBLISHABLE_KEY
     })
+})
+
+router.get('/success', function(req,res){
+    res.send("Payment success")
+})
+
+router.get('/cancelled', function(req,res){
+    res.send("Payment cancelled")
 })
 
 module.exports = router;
