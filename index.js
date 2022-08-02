@@ -71,19 +71,22 @@ app.use(function (req, res, next) {
   next();
 });
 
-const landingRoutes = require("./routes/landing");
-const productRoutes = require("./routes/products");
-const userRoutes = require("./routes/users");
-const cloudinaryRoutes = require("./routes/cloudinary");
-const cartRoutes = require("./routes/carts");
+const landingRoutes = require('./routes/landing');
+const productRoutes = require('./routes/products');
+const userRoutes = require('./routes/users')
+const cloudinaryRoutes = require('./routes/cloudinary');
+const cartRoutes = require('./routes/carts');
+const checkoutRoutes = require('./routes/checkout');
 const { checkIfAuthenticated } = require('./middlewares');
 
 // first arg is the prefix
-app.use("/", landingRoutes);
-app.use("/products", productRoutes);
-app.use("/users", userRoutes);
-app.use("/cloudinary", cloudinaryRoutes);
-app.use("/cart", [checkIfAuthenticated],cartRoutes);
+app.use('/', landingRoutes);
+app.use('/products', productRoutes);
+app.use('/users', userRoutes);
+app.use('/cloudinary', cloudinaryRoutes);
+app.use('/cart', [checkIfAuthenticated], cartRoutes);
+app.use('/checkout', [checkIfAuthenticated], checkoutRoutes);
+
 
 app.listen(3000, function () {
   console.log("Server has started");
