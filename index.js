@@ -41,12 +41,25 @@ app.use(session({
 }))
 
 // enable csrf protection
-app.use(csrf());
+// app.use(csrf());
+const csrfInstance = csrf();
+app.use(function(req,res,next){
+  // console.log("Checking for csrf exclusion");
+  if (req.url === '/checkout/process_payment') {
+    next();
+  } else {
+    csrfInstance(req,res,next);
+  }
+})
 
 app.use(function(req,res,next){
 
   // the csrfToken function is avaliable because of `app.use(csrf())`
-  res.locals.csrfToken = req.csrfToken(); 
+  // req.csrfToken will be a falsely value if it is not available
+  if (req.csrfToken) {
+    res.locals.csrfToken = req.csrfToken(); 
+  }
+
   next();
 
 })
@@ -91,7 +104,7 @@ app.use('/products', productRoutes);
 app.use('/users', userRoutes);
 app.use('/cloudinary', cloudinaryRoutes);
 app.use('/cart', [checkIfAuthenticated], cartRoutes);
-app.use('/checkout', [checkIfAuthenticated], checkoutRoutes);
+app.use('/checkout', checkoutRoutes);
 
 app.listen(3000, function(){
     console.log("Server has started");
