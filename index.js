@@ -104,7 +104,8 @@ const { checkIfAuthenticated } = require('./middlewares');
 const { getCart } = require('./dal/carts');
 
 const api = {
-  products: require('./routes/api/product')
+  products: require('./routes/api/products'),
+  users: require('./routes/api/users')
 }
 
 // first arg is the prefix
@@ -115,11 +116,10 @@ app.use('/cloudinary', cloudinaryRoutes);
 app.use('/cart', [checkIfAuthenticated], cartRoutes);
 app.use('/checkout', checkoutRoutes);
 
-
 // register api routes
 app.use('/api/products', express.json(), api.products);
 app.use('/api/users', express.json(), api.users);
 
-app.listen(3000, function(){
+app.listen(process.env.PORT, function(){
     console.log("Server has started");
 })

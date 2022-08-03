@@ -43,7 +43,10 @@ router.get('/', checkIfAuthenticated, async function(req,res){
     const payment = {
         payment_method_types: ['card'],
         line_items: lineItems,
-        success_url: process.env.STRIPE_SUCCESS_URL + "?sessionId={CHECKOUT_SESSION_ID}",
+        success_url: process.env.STRIPE_SUCCESS_URL 
+        + 
+        "?sessionId={CHECKOUT_SESSION_ID}"
+        ,
         cancel_url: process.env.STRIPE_CANCEL_URL,
         // in the metadata, the keys are up to us
         // but the value MUST BE A STRING
