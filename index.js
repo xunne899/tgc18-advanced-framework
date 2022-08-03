@@ -7,6 +7,7 @@ var helpers = require('handlebars-helpers')({
 
   // cors ---implement before sessions
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 //requiring in the dependencies for sessions
 const session = require('express-session');
 const flash = require('connect-flash');
@@ -117,6 +118,7 @@ app.use('/checkout', checkoutRoutes);
 
 // register api routes
 app.use('/api/products', express.json(), api.products);
+app.use('/api/users', express.json(), api.users);
 
 app.listen(3000, function(){
     console.log("Server has started");
