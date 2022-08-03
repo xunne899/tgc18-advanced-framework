@@ -120,6 +120,10 @@ app.use('/checkout', checkoutRoutes);
 app.use('/api/products', express.json(), api.products);
 app.use('/api/users', express.json(), api.users);
 
+// app.listen(process.env.PORT, function(){
+//   console.log("Server has started");
+// })
+
 app.listen(process.env.PORT, function(){
-    console.log("Server has started");
+  console.log("Server has started");
 })
