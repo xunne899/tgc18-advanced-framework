@@ -5,6 +5,8 @@ var helpers = require('handlebars-helpers')({
     handlebars: hbs.handlebars
   });
 
+  // cors ---implement before sessions
+const cors = require('cors');
 //requiring in the dependencies for sessions
 const session = require('express-session');
 const flash = require('connect-flash');
@@ -20,6 +22,8 @@ require('dotenv').config();
 const app = express();
 
 app.set('view engine', 'hbs');
+
+app.use(cors())
 
 app.use(express.urlencoded({
   extended: false
@@ -45,7 +49,7 @@ app.use(session({
 const csrfInstance = csrf();
 app.use(function(req,res,next){
   // console.log("Checking for csrf exclusion");
-  if (req.url === '/checkout/process_payment') {
+  if (req.url === '/checkout/process_payment' || req.url.slice(0,5) == '/api/') {
     next();
   } else {
     csrfInstance(req,res,next);
@@ -98,6 +102,10 @@ const checkoutRoutes = require('./routes/checkout');
 const { checkIfAuthenticated } = require('./middlewares');
 const { getCart } = require('./dal/carts');
 
+const api = {
+  products: require('./routes/api/product')
+}
+
 // first arg is the prefix
 app.use('/', landingRoutes);
 app.use('/products', productRoutes);
@@ -105,6 +113,10 @@ app.use('/users', userRoutes);
 app.use('/cloudinary', cloudinaryRoutes);
 app.use('/cart', [checkIfAuthenticated], cartRoutes);
 app.use('/checkout', checkoutRoutes);
+
+
+// register api routes
+app.use('/api/products', express.json(), api.products);
 
 app.listen(3000, function(){
     console.log("Server has started");
